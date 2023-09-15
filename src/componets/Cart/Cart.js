@@ -33,9 +33,14 @@ const Cart = (props) => {
   const ShowForm = () =>{
     setShownForm(true);
   }
-  const UnShownForm =()=>{
-    setShownForm(false);
-  }
+  
+  const modalActions =<div className={classes.actions}>
+  <button className={classes["button--alt"]} onClick={props.onHideCart}>
+    Close
+  </button>
+  {hasItems && <button className={classes.button} onClick={ShowForm}>Order</button>}
+  
+</div>
   return (
     <Modal onHideCart={props.onHideCart}>
       {cartItems}
@@ -43,13 +48,9 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      <div className={classes.actions}>
-        <button className={classes["button--alt"]} onClick={props.onHideCart}>
-          Close
-        </button>
-        {!shownForm && hasItems && <button className={classes.button} onClick={ShowForm}>Order</button>}
-        {shownForm && <Checkout HideForm ={UnShownForm}></Checkout>}
-      </div>
+      {shownForm && <Checkout HideForm ={props.onHideCart}></Checkout>}
+      {!shownForm && modalActions}
+     
     </Modal>
   );
 };
