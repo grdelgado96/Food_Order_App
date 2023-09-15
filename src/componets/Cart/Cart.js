@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import classes from "./Cart.module.css";
 import Modal from "../UI/Modal";
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
+import Checkout from "./Checkout";
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
+  const [shownForm, setShownForm]= useState(false);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
   const cartItemRemoveHandler = (id) => {
@@ -28,6 +30,12 @@ const Cart = (props) => {
       ))}
     </ul>
   );
+  const ShowForm = () =>{
+    setShownForm(true);
+  }
+  const UnShownForm =()=>{
+    setShownForm(false);
+  }
   return (
     <Modal onHideCart={props.onHideCart}>
       {cartItems}
@@ -39,7 +47,8 @@ const Cart = (props) => {
         <button className={classes["button--alt"]} onClick={props.onHideCart}>
           Close
         </button>
-        {hasItems && <button className={classes.button}>Order</button>}
+        {!shownForm && hasItems && <button className={classes.button} onClick={ShowForm}>Order</button>}
+        {shownForm && <Checkout HideForm ={UnShownForm}></Checkout>}
       </div>
     </Modal>
   );
